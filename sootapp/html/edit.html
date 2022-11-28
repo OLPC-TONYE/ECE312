@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{{calculation.title}} - Details</title>
+</head>
+<body>
+
+    <h1>{{calculation.title}}</h1>
+
+    <div class="col-xl-4 col-lg-6 col-md-12">
+        <div class="card">
+            <h4 class="card-title"></h4>
+            <div class="card-body">
+                <form action="{% url 'save' calculation.id %}" method="post" class="form">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        <input  type="text" class="form-control" name="var_mass" value="{{calculation.variables.mass}}">
+                        <input type="text" class="form-control" name="var_dm" value="{{calculation.variables.electrical_mobility}}" >
+
+                        <div class="result">
+                            <input type="text" class="form-control" value="{{calculation.variables.get_result}}" readonly="readonly" :disabled>
+                        </div>
+                    </fieldset>
+                    <button class="form-control" type="submit" id="details_edit">
+                        Save Values
+                    </button>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>
