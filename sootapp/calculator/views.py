@@ -60,7 +60,7 @@ def save_calculations(request, calculation_id):
 def edit_variables(request, calculation_id):
 
     calculation = get_object_or_404(Calculation, pk=calculation_id)
-    return render(request, 'edit.html', {'calculation': calculation})
+    return HttpResponseRedirect(reverse('details', kwargs={'calculation_id': calculation.id, 'edit_true': 'True'}))
 
 def save_variables(request, calculation_id):
 
