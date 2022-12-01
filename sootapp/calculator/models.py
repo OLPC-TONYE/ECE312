@@ -1,5 +1,7 @@
 import math
+
 from django.db import models
+from django.utils import timezone
 
 class Calculation(models.Model):
     title = models.CharField(max_length=200)
@@ -9,12 +11,12 @@ class Calculation(models.Model):
         return self.title
 
 class Variables(models.Model):
-    calculation = models.OneToOneField(Calculation, on_delete=models.CASCADE, primary_key=True)
-    electrical_mobility = models.FloatField('dm')
-    mass = models.FloatField('m')
-
+    calculation = models.ForeignKey(Calculation, on_delete=models.CASCADE)
+    electrical_mobility = models.FloatField('dm', default=0)
+    mass = models.FloatField('m', default=1)
     def get_result(self):
-        return (6 * self.mass)/(math.pi * (self.electrical_mobility)**3)
+        result = (6 * self.mass)/(math.pi * (self.electrical_mobility)**3)
+        return result
 
     def __str__(self):
         return "Electrical Mobility: %f,  Mass= %f" % (self.electrical_mobility, self.mass)

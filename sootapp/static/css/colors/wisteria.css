@@ -80,7 +80,7 @@ a:hover{
 .owl-theme .owl-controls .owl-page.active span, .owl-theme .owl-controls.clickable .owl-page:hover span{
 	background: #8e44ad;
 }
-#subscribe .sub-item-box .icon-box i{
+#results .sub-item-box .icon-box i{
 	color: #8e44ad;
 }
 #blog .blog-item-text h3 a:hover{
@@ -125,7 +125,7 @@ footer .menu li a:hover{
 #google-map{
 	border-color: #8e44ad;
 }
-#subscribe form input:focus{
+#results form input:focus{
 	border-color: #8e44ad;
 }
 #copyright p a:hover{
@@ -133,4 +133,7 @@ footer .menu li a:hover{
 }
 #copyright .nav-inline .nav-link:hover{
 	color: #8e44ad;
+}
+.add-btn {
+	background-color: #8e44ad
 }

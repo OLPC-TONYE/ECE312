@@ -1,39 +1,226 @@
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <title>Welcome</title>
 
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>{{calculation.title}} Details</title>
-</head>
-<body>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/line-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nivo-lightbox.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'css/color-switcher.css' %}">
+    <link rel="stylesheet" href="{% static 'css/menu_sideslide.css'%} ">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">    
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
 
-    <h1>{{calculation.title}}</h1>
-
-    <div class="col-xl-4 col-lg-6 col-md-12">
-        <div class="card">
-            <h4 class="card-title"></h4>
-            <div class="card-body">
-      
-                <form action="{% url 'edit' calculation.id %}" class="form">
-                    <fieldset class="form-group">
-                        <input  type="text" class="form-control" value="{{calculation.variables.mass}}" readonly="readonly">
-                        <input type="text" class="form-control" value="{{calculation.variables.electrical_mobility}}" readonly="readonly">
-
-                        <div class="result">
-                            <input type="text" value="{{calculation.variables.get_result}}" readonly="readonly" :disabled>
-                        </div>
-                    </fieldset>
-                    <button class="form-control" type="submit" id="details_edit">
-                        Edit Values
-                    </button>
-                    
-                </form>
-            </div>
+    <link rel="stylesheet" id="colors" href="{% static 'css/colors/blue.css' %}">
+  </head>
+  
+  <body>
+    <!-- Header Section Start -->
+    <header id="slider-area">  
+      <nav class="navbar navbar-expand-md fixed-top scrolling-navbar bg-white">
+        <div class="container">          
+          <a class="navbar-brand" href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}"></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="lni-menu"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto w-100 justify-content-end">
+              <li class="nav-item">
+                <a class="nav-link page-scroll" href="{% url 'index' %}">Back to Home</a>
+              </li>
+            </ul>              
+          </div>
         </div>
+      </nav> 
+
+    <!-- Results Section Start -->
+    <div id="results" class="section">
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col-lg-12 col-md-12 col-xs-12">
+            <div class="subscribe-form">
+              <div class="form-wrapper">
+                <div class="sub-title text-center">
+                  <h3>Soot Density Calculator</h3>
+                  <p>* Still In Progress</p>
+                </div>
+                {% if calculation %}
+                <form action="{% url 'save_calculation' calculation.id %}" method="post">
+                {% else %}
+                <form action="{% url 'add' %}" method="post">
+                {% endif %}
+                  {% csrf_token %}
+                  <div class="row">
+                    {% if calculation %}
+                    <div class="col-12 form-line">
+                      <div class="sub-title text-left">
+                        <h4>{{calculation.title}}</h3>
+                      </div>
+                    </div>
+                    {% for variable in calculation.variables_set.all %}
+                    <div class="row form-line">
+                      <div class="col-md-1">
+                        <h7>{{forloop.counter}}</h7>
+                      </div>
+                      <div class="col-lg-4 col-md-4">
+                        <div class="form-group">
+                          <input type="text" class="form-control" name="var_dm_{{forloop.counter}}" value="{{variable.electrical_mobility}}" placeholder="Electrical Mobility" disabled>
+                        </div>
+                      </div>
+                      <div class="col-lg-4 col-md-4">
+                        <div class="form-group">
+                          <input type="text" class="form-control" name="var_mass_{{forloop.counter}}" value="{{variable.mass}}" placeholder="Mass" disabled>
+                        </div> 
+                      </div>
+                      <div class="col-lg-3 col-md-4">
+                        <div class="form-group">
+                          <input type="text" class="form-control" name="var_result_{{forloop.counter}}" value="{{variable.get_result}}" placeholder="Result" disabled>
+                        </div> 
+                      </div>
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="col-lg-4 col-12">
+                      <div class="form-submit">
+                        {% if edit_true %}
+                          <button type="submit"  style="margin-top: 40px;margin-bottom: -120px;" class="btn btn-common btn-effect">Edit</button>
+                        {% else %}
+                          <button type="submit"  class="btn btn-common btn-effect">Edit</button>
+                        {% endif %}
+                        
+                      </div>
+                    </div>
+                    {% else %}
+                    <div class="col-12 form-line">
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="new_title" placeholder="Title">
+                      </div>
+                    </div>
+                    <div class="col-12">
+                      <div class="form-submit">
+                        <button type="submit" class="btn btn-common btn-effect">Add</button>
+                      </div>
+                    </div>
+                    {% endif %}
+                    
+                  </div>
+                </form>
+                {% if edit_true %}
+                <form action="{% url 'add_variable' calculation.id %}" method="post">
+                  {% csrf_token %}
+                  <div class="col-1">
+                    <div class="form-submit text-right">
+                      <button type="submit" class="add-btn">+</button>
+                    </div>
+                  </div>
+                </form>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <!-- Results Section End -->
+
+    <!-- Footer Section Start -->
+    <footer>
+      <!-- Footer Area Start -->
+      <section class="footer-Content">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-mb-12">
+              <h3>Join Us</h3>
+              <div class="textwidget">
+                <p>If you think you have the passion, 
+                attitude and capability to join us 
+                the next biggest software company
+                so that you be get the conversation.</p>
+              </div>
+              <ul class="footer-social">
+                <li><a class="facebook" href="#"><i class="lni-facebook-filled"></i></a></li>
+                <li><a class="twitter" href="#"><i class="lni-twitter-filled"></i></a></li>
+                <li><a class="linkedin" href="#"><i class="lni-linkedin-fill"></i></a></li>
+                <li><a class="google-plus" href="#"><i class="lni-google-plus"></i></a></li>
+              </ul> 
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-mb-12">
+              <div class="widget">
+                <h3 class="block-title">Get The Source On Github</h3>
+                <ul class="contact-footer">
+                  <li>
+                    <strong>Github :</strong> <span><a href="#">info@example.com</a></span>
+                  </li>
+                </ul> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Footer area End -->
+
+    </footer>
+    <!-- Footer Section End -->  
+
+    <!-- Go To Top Link -->
+    <a href="#" class="back-to-top">
+      <i class="lni-arrow-up"></i>
+    </a>
+
+    <div id="loader">
+      <div class="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+      </div>
+    </div>    
+
+    <div id="color-style-switcher">
+      <div>
+        <h3>Color Theme</h3>
+        <ul class="colors">
+          <li><a class="color1 active" data-csslink="{% static 'css/colors/preset.css' %}" href="#"></a></li>
+          <li><a class="color2" data-csslink="{% static 'css/colors/blue.css' %}" href="#"></a></li>
+          <li><a class="color3" data-csslink="{% static 'css/colors/turquoise.css' %}" href="#"></a></li>
+          <li><a class="color4" data-csslink="{% static 'css/colors/orange.css' %}" href="#"></a></li>
+          <li><a class="color5" data-csslink="{% static 'css/colors/wisteria.css' %}" href="#"></a></li>
+          <li><a class="color6" data-csslink="{% static 'css/colors/alizarin.css' %}" href="#"></a></li>
+        </ul>
+      </div>
+      <div class="bottom"> <a href="#" class="settings"><i class="lni-cog"></i></a> </div>
+    </div>
+
+    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src = "{% static 'js/jquery-min.js' %}"></script>
+    <script src = "{% static 'js/popper.min.js' %}"></script>
+    <script src = "{% static 'js/bootstrap.min.js' %}"></script>
+    <script src = "{% static 'js/classie.js' %}"></script>
+    <script src = "{% static 'js/color-switcher.js' %}"></script>
+    <script src = "{% static 'js/jquery.mixitup.js' %}"></script>
+    <script src = "{% static 'js/nivo-lightbox.js' %}"></script>
+    <script src = "{% static 'js/owl.carousel.js' %}"></script>    
+    <script src = "{% static 'js/jquery.stellar.min.js' %}"></script>    
+    <script src = "{% static 'js/jquery.nav.js' %}"></script>    
+    <script src = "{% static 'js/scrolling-nav.js' %}"></script>    
+    <script src = "{% static 'js/jquery.easing.min.js' %}"></script>     
+    <script src = "{% static 'js/wow.js' %}"></script> 
+    <script src = "{% static 'js/jquery.vide.js' %}"></script>
+    <script src = "{% static 'js/jquery.counterup.min.js' %}"></script>    
+    <script src = "{% static 'js/jquery.magnific-popup.min.js' %}"></script>    
+    <script src = "{% static 'js/waypoints.min.js' %}"></script>    
+    <script src = "{% static 'js/form-validator.min.js' %}"></script>
+    <script src = "{% static 'js/contact-form-script.js' %}"></script>   
+    <script src = "{% static 'js/main.js' %}"></script>
     
-</body>
+  </body>
 </html>

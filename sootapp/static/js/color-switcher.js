@@ -8,33 +8,10 @@ window.console = window.console || (function(){
 
 jQuery(document).ready(function($) {
 	"use strict"
-	$("ul.colors .color1" ).click(function(){
-		$("#colors" ).attr("href", "css/colors/preset.css" );
-		return false;
-	});	
 
-	$("ul.colors .color2" ).click(function(){
-		$("#colors" ).attr("href", "css/colors/blue.css" );
-		return false;
-	});	
-
-	$("ul.colors .color3" ).click(function(){
-		$("#colors" ).attr("href", "css/colors/turquoise.css" );
-		return false;
-	});
-
-	$("ul.colors .color4" ).click(function(){
-		$("#colors" ).attr("href", "css/colors/orange.css" );
-		return false;
-	});
-
-	$("ul.colors .color5" ).click(function(){
-		$("#colors" ).attr("href", "css/colors/wisteria.css" );
-		return false;
-	});	
-
-	$("ul.colors .color6" ).click(function(){
-		$("#colors" ).attr("href", "css/colors/alizarin.css" );
+	$("ul.colors li a" ).click(function(){
+		var link = $(this).attr("data-csslink");
+		$("#colors" ).attr("href", link );
 		return false;
 	});
 
@@ -63,22 +40,4 @@ jQuery(document).ready(function($) {
 
 
 //Inject Necessary Styles and HTML
-jQuery('head').append('<link rel="stylesheet" id="colors" href="css/colors/preset.css" type="text/css" />');
-jQuery('head').append('<link rel="stylesheet" href="css/color-switcher.css" type="text/css" />'); 
 
-jQuery('body').append('' + 
-	'<div id="color-style-switcher">' +
-		'<div>' + 
-			'<h3>Color Palette</h3>' +
-			'<ul class="colors">' +
-				'<li><a class="color1 active" href="#"></a></li>' +
-				'<li><a class="color2" href="#"></a></li>' +
-				'<li><a class="color3" href="#"></a></li>' +
-				'<li><a class="color4" href="#"></a></li>' +
-				'<li><a class="color5" href="#"></a></li>' +
-				'<li><a class="color6" href="#"></a></li>' +
-			'</ul>' +
-		'</div>' +
-		'<div class="bottom"> <a href="#" class="settings"><i class="lni-cog"></i></a> </div>' +
-	'</div>' +
-'');
